@@ -1,0 +1,90 @@
+# Instructions and commands
+
+### Download Apache (httpd)
+
+```bash
+sudo yum install httpd -y
+sudo systemctl restart httpd
+sudo systemctl enable httpd
+```
+
+### Create Apache Virtual Host
+
+```bash
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@yourdomain.com
+    DocumentRoot /var/www/html/laravel-demo/public
+    ServerName laravel.com
+    ServerAlias www.laraveldemo.com
+
+    <Directory /var/www/html/laravel-demo/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/httpd/yourdomain.com_error.log
+    CustomLog /var/log/httpd/yourdomain.com_access.log combined
+</VirtualHost>
+
+```
+
+## Restart apache
+
+### Install MySQL
+
+```bash
+sudo wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
+# if key gpg
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+sudo dnf upgrade
+# then
+sudo dnf install mysql80-community-release-el9-1.noarch.rpm -y
+sudo dnf install mysql-community-server -y
+# permissions
+sudo vi /etc/my.cnf
+skip-grant-tables
+
+```
+
+### Install php
+
+```bash
+amazon-linux-extras enable php8.2
+sudo yum install php-cli php-xml php-json php-mbstring php-process php-common php-fpm php-zip php-mysqlnd git -y
+```
+
+### Install Composer
+
+```bash
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/bin/composer
+sudo chmod +x /usr/bin/composer
+```
+
+### Install Laravel
+
+```bash
+cd var/www/html
+composer create-project --prefer-dist laravel/laravel <project-name>
+```
+
+### Permissons
+
+```bash
+sudo chown -R ec2-user:apache /var/www
+sudo chmod 2775 /var/www && find /var/www -type d -exec sudo chmod 2775 {} \;
+find /var/www -type f -exec sudo chmod 0664 {} \;
+# PHP permissions
+
+sudo chmod -R 775 /var/www/html/demoH/storage/logs/
+sudo chmod -R 775 /var/www/html/demoH/storage/framework/views/
+sudo chmod -R 775 /var/www/html/demoH/storage/framework/sessions/
+```
+
+### composer install (optional)
+
+```bash
+composer install
+```
