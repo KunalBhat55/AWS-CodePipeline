@@ -88,3 +88,18 @@ sudo chmod -R 775 /var/www/html/demoH/storage/framework/sessions/
 ```bash
 composer install
 ```
+
+### phpmyadmin to AWS RDS connection
+$i++;
+/* Authentication type and info */
+$cfg['Servers'][$i]['auth_type'] = 'config';
+$cfg['Servers'][$i]['user'] = 'admin';
+$cfg['Servers'][$i]['password'] = '12345678';
+$cfg['Servers'][$i]['extension'] = 'mysql';
+$cfg['Servers'][$i]['port'] = 3306;
+
+
+/* Bind to the localhost ipv4 address and tcp */
+$cfg['Servers'][$i]['host'] = 'database-1.cf82s44co0nt.us-east-1.rds.amazonaws.com';
+$cfg['Servers'][$i]['connect_type'] = 'tcp';
+
